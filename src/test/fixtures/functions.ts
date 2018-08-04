@@ -1,8 +1,8 @@
-module.exports = {
-  describe: 'functions',
+export default {
+  describe: "functions",
   coverageV8: {
     "scriptId": "71",
-    "url": "./test/fixtures/scripts/functions.js",
+    "url": "./src/test/fixtures/scripts/functions.js",
     "functions": [
       {
         "functionName": "",
@@ -10,10 +10,10 @@ module.exports = {
           {
             "startOffset": 0,
             "endOffset": 790,
-            "count": 1
-          }
+            "count": 1,
+          },
         ],
-        "isBlockCoverage": true
+        "isBlockCoverage": true,
       },
       {
         "functionName": "",
@@ -21,10 +21,10 @@ module.exports = {
           {
             "startOffset": 1,
             "endOffset": 788,
-            "count": 1
-          }
+            "count": 1,
+          },
         ],
-        "isBlockCoverage": true
+        "isBlockCoverage": true,
       },
       {
         "functionName": "a",
@@ -32,10 +32,10 @@ module.exports = {
           {
             "startOffset": 93,
             "endOffset": 162,
-            "count": 0
-          }
+            "count": 0,
+          },
         ],
-        "isBlockCoverage": false
+        "isBlockCoverage": false,
       },
       {
         "functionName": "b",
@@ -43,25 +43,25 @@ module.exports = {
           {
             "startOffset": 198,
             "endOffset": 315,
-            "count": 1
+            "count": 1,
           },
           {
             "startOffset": 242,
             "endOffset": 251,
-            "count": 0
+            "count": 0,
           },
           {
             "startOffset": 292,
             "endOffset": 297,
-            "count": 0
+            "count": 0,
           },
           {
             "startOffset": 311,
             "endOffset": 314,
-            "count": 0
-          }
+            "count": 0,
+          },
         ],
-        "isBlockCoverage": true
+        "isBlockCoverage": true,
       },
       {
         "functionName": "c",
@@ -69,10 +69,10 @@ module.exports = {
           {
             "startOffset": 374,
             "endOffset": 423,
-            "count": 2
-          }
+            "count": 2,
+          },
         ],
-        "isBlockCoverage": true
+        "isBlockCoverage": true,
       },
       {
         "functionName": "Foo",
@@ -80,10 +80,10 @@ module.exports = {
           {
             "startOffset": 510,
             "endOffset": 537,
-            "count": 0
-          }
+            "count": 0,
+          },
         ],
-        "isBlockCoverage": false
+        "isBlockCoverage": false,
       },
       {
         "functionName": "hello",
@@ -91,10 +91,10 @@ module.exports = {
           {
             "startOffset": 546,
             "endOffset": 580,
-            "count": 0
-          }
+            "count": 0,
+          },
         ],
-        "isBlockCoverage": false
+        "isBlockCoverage": false,
       },
       {
         "functionName": "Bar",
@@ -102,10 +102,10 @@ module.exports = {
           {
             "startOffset": 657,
             "endOffset": 688,
-            "count": 1
-          }
+            "count": 1,
+          },
         ],
-        "isBlockCoverage": true
+        "isBlockCoverage": true,
       },
       {
         "functionName": "hello",
@@ -113,32 +113,32 @@ module.exports = {
           {
             "startOffset": 699,
             "endOffset": 750,
-            "count": 1
-          }
+            "count": 1,
+          },
         ],
-        "isBlockCoverage": true
-      }
-    ]
+        "isBlockCoverage": true,
+      },
+    ],
   },
   assertions: [
     {
-      describe: 'function that is not executed',
+      describe: "function that is not executed",
       lines: [
         {
           start: 2,
           end: 6,
-          count: 0
-        }
-      ]
+          count: 0,
+        },
+      ],
     },
     {
-      describe: 'function that is called once',
+      describe: "function that is called once",
       lines: [
         {
           startLine: 9,
           endLine: 14,
-          count: 1
-        }
+          count: 1,
+        },
       ],
       branches: [
         {
@@ -146,9 +146,9 @@ module.exports = {
           startCol: 28,
           endLine: 10,
           endCol: 37,
-          count: 0
-        }
-      ]
+          count: 0,
+        },
+      ],
     },
     {
       describe: "function that's called multiple times",
@@ -156,34 +156,34 @@ module.exports = {
         {
           startLine: 20,
           endLine: 22,
-          count: 2
-        }
-      ]
+          count: 2,
+        },
+      ],
     },
     {
-      describe: 'class that never has member functions called',
+      describe: "class that never has member functions called",
       lines: [
         {
           startLine: 30,
           endLine: 30,
-          count: 0
+          count: 0,
         },
         {
           startLine: 33,
           endLine: 33,
-          count: 0
-        }
-      ]
+          count: 0,
+        },
+      ],
     },
     {
-      describe: 'class that has member functions called',
+      describe: "class that has member functions called",
       lines: [
         {
           startLine: 38,
           endLine: 45,
-          count: 1
-        }
-      ]
-    }
-  ]
-}
+          count: 1,
+        },
+      ],
+    },
+  ],
+};
