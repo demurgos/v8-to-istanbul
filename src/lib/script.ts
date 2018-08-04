@@ -1,9 +1,10 @@
 import assert from "assert";
+import Protocol from "devtools-protocol";
 import fs from "fs";
 import Module from "module";
-import { CovLine } from "./line";
 import { CovBranch } from "./branch";
 import { CovFunction } from "./function";
+import { CovLine } from "./line";
 import { IstanbulFileCoverageData } from "./types";
 
 // Node.js injects a header when executing a script.
@@ -31,57 +32,50 @@ export class CovScript {
     this._buildLines(source, this.lines);
   }
 
-  private _buildLines(source: any, lines: any) {
-    let position = 0;
-    source.split("\n").forEach((lineStr: any, i: any) => {
-      this.eof = position + lineStr.length;
-      lines.push(new CovLine(i + 1, position, this.eof));
-      position += lineStr.length + 1; // also add the \n.
-    });
-  }
-
-  public applyCoverage(blocks: any) {
-    blocks.forEach((block: any) => {
-      block.ranges.forEach((range: any) => {
+  public applyCoverage(blocks: Protocol.Profiler.FunctionCoverage[]): void {
+    for (const block of blocks) {
+      for (const range of block.ranges) {
         const startCol = Math.max(0, range.startOffset - this.header.length);
         const endCol = Math.min(this.eof, range.endOffset - this.header.length);
-        const lines = this.lines.filter((line: any) => {
+        const lines = this.lines.filter((line: CovLine): boolean => {
           return startCol <= line.endCol && endCol >= line.startCol;
         });
 
-        if (block.isBlockCoverage && lines.length) {
-          // record branches.
-          this.branches.push(new CovBranch(
-            lines[0],
-            startCol,
-            lines[lines.length - 1],
-            endCol,
-            range.count,
-          ));
-        } else if (block.functionName && lines.length) {
-          // record functions.
-          this.functions.push(new CovFunction(
-            block.functionName,
-            lines[0],
-            startCol,
-            lines[lines.length - 1],
-            endCol,
-            range.count,
-          ));
+        if (lines.length > 0) {
+          if (block.isBlockCoverage) {
+            // record branches.
+            this.branches.push(new CovBranch(
+              lines[0],
+              startCol,
+              lines[lines.length - 1],
+              endCol,
+              range.count,
+            ));
+          } else if (block.functionName !== "") {
+            // record functions.
+            this.functions.push(new CovFunction(
+              block.functionName,
+              lines[0],
+              startCol,
+              lines[lines.length - 1],
+              endCol,
+              range.count,
+            ));
+          }
         }
 
         // record the lines (we record these as statements, such that we're
         // compatible with Istanbul 2.0).
-        lines.forEach((line: any) => {
+        for (const line of lines) {
           // make sure branch spans entire line; don't record 'goodbye'
           // branch in `const foo = true ? 'hello' : 'goodbye'` as a
           // 0 for line coverage.
           if (startCol <= line.startCol && endCol >= line.endCol) {
             line.count = range.count;
           }
-        });
-      });
-    });
+        }
+      }
+    }
   }
 
   public toIstanbul(): any {
@@ -94,6 +88,15 @@ export class CovScript {
     const istanbulOuter = Object.create(null);
     istanbulOuter[istanbulInner.path] = istanbulInner;
     return istanbulOuter;
+  }
+
+  private _buildLines(source: any, lines: any) {
+    let position = 0;
+    source.split("\n").forEach((lineStr: any, i: any) => {
+      this.eof = position + lineStr.length;
+      lines.push(new CovLine(i + 1, position, this.eof));
+      position += lineStr.length + 1; // also add the \n.
+    });
   }
 
   private _statementsToIstanbul(): {statementMap: any, s: any} {
