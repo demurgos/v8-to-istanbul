@@ -11,10 +11,10 @@ tap.mochaGlobals();
 declare const describe: any;
 declare const it: any;
 
-describe("Script", () => {
-  describe("constructor", () => {
+describe("CovScript", () => {
+  describe("fromUrlSync", () => {
     it("creates line instance for each line in script", () => {
-      const script = new CovScript(
+      const script = CovScript.fromUrlSync(
         require.resolve("./fixtures/scripts/functions.js"),
       );
       script.lines.length.should.equal(49);
@@ -22,7 +22,7 @@ describe("Script", () => {
     });
 
     it("handles ESM style paths", () => {
-      const script = new CovScript(
+      const script = CovScript.fromUrlSync(
         `file://${require.resolve("./fixtures/scripts/functions.js")}`,
       );
       script.lines.length.should.equal(49);

@@ -42,7 +42,7 @@ export interface IstanbulFileCoverageData<S extends keyof any = keyof any, F ext
   /**
    * Hit count for branches.
    */
-  b: Record<B, number>;
+  b: Record<B, number[]>;
 }
 
 /**
