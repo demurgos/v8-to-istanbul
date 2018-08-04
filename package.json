@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "convert from v8 coverage format to istanbul's format",
   "main": "build/lib/index.js",
+  "types": "build/lib/index.d.ts",
   "scripts": {
     "lint": "tslint --project src/lib/tsconfig.json",
     "posttest": "standard",
