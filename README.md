@@ -4,6 +4,27 @@ converts from v8 coverage format to [istanbul's coverage format](https://github.
 
 ## Usage
 
+```typescript
+import Protocol from "devtools-protocol";
+import {fromScriptCoverage} from "v8-to-istambul";
+
+async function main() {
+  // Get a V8 ScriptCoverage.
+  v8Coverage: Protocol.Profiler.ScriptCoverage = ...;
+  
+  // Convert it to the Istanbul format.
+  const istanbulCoverage = await fromScriptCoverage(v8Coverage);
+  
+  // The result is a plain object: you can store it and use it to build an
+  // Istanbul `FileCoverage` instance.
+  console.info(JSON.stringify(istanbulCoverage));
+}
+
+main();
+```
+
+Manual conversion:
+
 ```js
 const v8toIstanbul = require('v8-to-istanbul')
 // create a script object from a source-file. the source file
