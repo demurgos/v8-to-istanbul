@@ -4,18 +4,19 @@ import Module from "module";
 import { CovLine } from "./line";
 import { CovBranch } from "./branch";
 import { CovFunction } from "./function";
+import { IstanbulFileCoverageData } from "./types";
 
 // Node.js injects a header when executing a script.
 // TODO: Add `wrapper` to @types/node
 const cjsHeader = (Module as any).wrapper[0];
 
 export class CovScript {
-  path: string;
-  header: any;
-  lines: any;
-  branches: any;
-  functions: any;
-  eof: any;
+  public readonly path: string;
+  public readonly header: string;
+  public readonly lines: CovLine[];
+  public readonly branches: CovBranch[];
+  public readonly functions: CovFunction[];
+  public eof: number;
 
   constructor(scriptPath: string) {
     assert(typeof scriptPath === "string", "scriptPath must be a string");
@@ -30,7 +31,7 @@ export class CovScript {
     this._buildLines(source, this.lines);
   }
 
-  _buildLines(source: any, lines: any) {
+  private _buildLines(source: any, lines: any) {
     let position = 0;
     source.split("\n").forEach((lineStr: any, i: any) => {
       this.eof = position + lineStr.length;
@@ -39,7 +40,7 @@ export class CovScript {
     });
   }
 
-  applyCoverage(blocks: any) {
+  public applyCoverage(blocks: any) {
     blocks.forEach((block: any) => {
       block.ranges.forEach((range: any) => {
         const startCol = Math.max(0, range.startOffset - this.header.length);
@@ -83,52 +84,49 @@ export class CovScript {
     });
   }
 
-  toIstanbul() {
-    const istanbulInner = Object.assign(
-      {path: this.path},
-      this._statementsToIstanbul(),
-      this._branchesToIstanbul(),
-      this._functionsToIstanbul(),
-    );
-    const istanbulOuter: any = {};
-    istanbulOuter[this.path] = istanbulInner;
+  public toIstanbul(): any {
+    const istanbulInner: IstanbulFileCoverageData = {
+      path: this.path,
+      ...this._statementsToIstanbul(),
+      ...this._branchesToIstanbul(),
+      ...this._functionsToIstanbul(),
+    };
+    const istanbulOuter = Object.create(null);
+    istanbulOuter[istanbulInner.path] = istanbulInner;
     return istanbulOuter;
   }
 
-  _statementsToIstanbul() {
-    const statements: any = {
-      statementMap: {},
-      s: {},
-    };
-    this.lines.forEach((line: any, index: any) => {
-      statements.statementMap[`${index}`] = line.toIstanbul();
-      statements.s[`${index}`] = line.count;
-    });
-    return statements;
+  private _statementsToIstanbul(): {statementMap: any, s: any} {
+    const statementMap = Object.create(null);
+    const s = Object.create(null);
+    for (const [index, line] of this.lines.entries()) {
+      const key: string = String(index);
+      statementMap[key] = line.toIstanbul();
+      s[key] = line.count;
+    }
+    return {statementMap, s};
   }
 
-  _branchesToIstanbul() {
-    const branches: any = {
-      branchMap: {},
-      b: {},
-    };
-    this.branches.forEach((branch: any, index: any) => {
-      branches.branchMap[`${index}`] = branch.toIstanbul();
-      branches.b[`${index}`] = [branch.count];
-    });
-    return branches;
+  private _branchesToIstanbul(): {branchMap: any, b: any} {
+    const branchMap = Object.create(null);
+    const b = Object.create(null);
+    for (const [index, branch] of this.branches.entries()) {
+      const key: string = String(index);
+      branchMap[key] = branch.toIstanbul();
+      b[key] = [branch.count];
+    }
+    return {branchMap, b};
   }
 
-  _functionsToIstanbul() {
-    const functions: any = {
-      fnMap: {},
-      f: {},
-    };
-    this.functions.forEach((fn: any, index: any) => {
-      functions.fnMap[`${index}`] = fn.toIstanbul();
-      functions.f[`${index}`] = fn.count;
-    });
-    return functions;
+  private _functionsToIstanbul(): {fnMap: any, f: any} {
+    const fnMap = Object.create(null);
+    const f = Object.create(null);
+    for (const [index, fn] of this.functions.entries()) {
+      const key: string = String(index);
+      fnMap[key] = fn.toIstanbul();
+      f[key] = fn.count;
+    }
+    return {fnMap, f};
   }
 }
 
