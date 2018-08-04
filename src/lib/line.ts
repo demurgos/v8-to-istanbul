@@ -1,17 +1,19 @@
-export class CovLine {
-  line: any;
-  startCol: any;
-  endCol: any;
-  count: any;
+import { SourceLocation } from "@babel/types";
 
-  constructor(line: any, startCol: any, endCol: any) {
+export class CovLine {
+  public readonly line: number;
+  public readonly startCol: number;
+  public readonly endCol: number;
+  public count: number;
+
+  constructor(line: number, startCol: number, endCol: number) {
     this.line = line;
     this.startCol = startCol;
     this.endCol = endCol;
     this.count = 0;
   }
 
-  toIstanbul() {
+  public toIstanbul(): SourceLocation {
     return {
       start: {
         line: this.line,

@@ -1,3 +1,5 @@
+import { SourceLocation } from "@babel/types";
+
 /**
  * Interface for Istanbul's `FileCoverage` options.
  *
@@ -25,7 +27,7 @@ export interface IstanbulFileCoverageData<S extends keyof any = keyof any, F ext
   /**
    * Map of branch metadata keyed by branch index.
    */
-  branchMap: Record<B, any>;
+  branchMap: Record<B, IstanbulBranch>;
 
   /**
    * Hit counts for statements.
@@ -41,4 +43,28 @@ export interface IstanbulFileCoverageData<S extends keyof any = keyof any, F ext
    * Hit count for branches.
    */
   b: Record<B, number>;
+}
+
+/**
+ * Represents the recognized branch types.
+ *
+ * Ultimately, it seems that Istanbul does not care about the exact value.
+ * That's why this union has `string` (which absorbs the other possibilities).
+ *
+ * The types listed explicitly corresponds to the ones created by Instanbul's
+ * instrumentation lib. See first parameter to `newBranch` calls.
+ *
+ * @see https://github.com/istanbuljs/istanbuljs/blob/71b815d111af5181196173f8af94f14510bb5f7b/packages/istanbul-lib-instrument/src/visitor.js
+ */
+export type IstanbulBranchType = "binary-expr" | "cond-expr" | "default-arg" | "if" | "switch" | string;
+
+export interface IstanbulBranch {
+  type: IstanbulBranchType;
+
+  /**
+   * 1-based index of the first line of this branch.
+   */
+  line: number;
+  loc: SourceLocation;
+  locations: SourceLocation[];
 }

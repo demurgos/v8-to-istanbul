@@ -12,6 +12,7 @@
     "moduleResolution": "node",
     "newLine": "lf",
     "strict": true,
+    "strictNullChecks": true,
     "target": "es2017",
     "typeRoots": [
       "node_modules/@types",
