@@ -1,12 +1,16 @@
-export class CovFunction {
-  name: string;
-  startLine: any;
-  startCol: any;
-  endLine: any;
-  endCol: any;
-  count: any;
+import { SourceLocation } from "@babel/types";
+import { CovLine } from "./line";
+import { IstanbulFunction } from "./types";
 
-  constructor(name: string, startLine: any, startCol: any, endLine: any, endCol: any, count: any) {
+export class CovFunction {
+  public readonly name: string;
+  public readonly startLine: CovLine;
+  public readonly startCol: number;
+  public readonly endLine: CovLine;
+  public readonly endCol: number;
+  public count: number;
+
+  constructor(name: string, startLine: CovLine, startCol: number, endLine: CovLine, endCol: number, count: number) {
     this.name = name;
     this.startLine = startLine;
     this.startCol = startCol;
@@ -15,8 +19,8 @@ export class CovFunction {
     this.count = count;
   }
 
-  toIstanbul() {
-    const loc = {
+  public toIstanbul(): IstanbulFunction {
+    const loc: SourceLocation = {
       start: {
         line: this.startLine.line,
         column: this.startCol - this.startLine.startCol,

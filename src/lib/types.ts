@@ -17,12 +17,12 @@ export interface IstanbulFileCoverageData<S extends keyof any = keyof any, F ext
   /**
    * Map of statement locations keyed by statement index.
    */
-  statementMap: Record<S, any>;
+  statementMap: Record<S, SourceLocation>;
 
   /**
    * Map of function metadata keyed by function index.
    */
-  fnMap: Record<F, any>;
+  fnMap: Record<F, IstanbulFunction>;
 
   /**
    * Map of branch metadata keyed by branch index.
@@ -67,4 +67,11 @@ export interface IstanbulBranch {
   line: number;
   loc: SourceLocation;
   locations: SourceLocation[];
+}
+
+export interface IstanbulFunction {
+  name: string;
+  decl: SourceLocation;
+  loc: SourceLocation;
+  line: number;
 }
