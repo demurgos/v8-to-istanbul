@@ -5,7 +5,8 @@
     "esModuleInterop": true,
     "inlineSourceMap": true,
     "lib": [
-      "es2017"
+      "es2017",
+      "esnext.asynciterable"
     ],
     "locale": "en-us",
     "module": "commonjs",

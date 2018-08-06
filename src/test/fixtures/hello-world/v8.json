@@ -1,0 +1,30 @@
+[
+  {
+    "url": "/main.js",
+    "source": "(function (exports, require, module, __filename, __dirname) { console.log('Hello, World!')\n\n});",
+    "functions": [
+      {
+        "functionName": "",
+        "ranges": [
+          {
+            "startOffset": 0,
+            "endOffset": 95,
+            "count": 1
+          }
+        ],
+        "isBlockCoverage": true
+      },
+      {
+        "functionName": "",
+        "ranges": [
+          {
+            "startOffset": 1,
+            "endOffset": 93,
+            "count": 1
+          }
+        ],
+        "isBlockCoverage": true
+      }
+    ]
+  }
+]
