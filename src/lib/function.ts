@@ -33,6 +33,7 @@ export class CovFunction {
     return {
       name: this.name,
       decl: loc,
+      // tslint:disable-next-line:object-literal-shorthand
       loc: loc,
       line: this.startLine.line,
     };

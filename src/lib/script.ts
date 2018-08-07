@@ -1,10 +1,10 @@
+import { SourceLocation } from "@babel/types";
 import Protocol from "devtools-protocol";
 import Module from "module";
 import { CovBranch } from "./branch";
 import { CovFunction } from "./function";
 import { CovLine } from "./line";
 import { IstanbulBranch, IstanbulFileCoverageData, IstanbulFunction } from "./types";
-import { SourceLocation } from "@babel/types";
 
 // Node.js injects a header when executing a script.
 // TODO: Add `wrapper` to @types/node
@@ -96,13 +96,6 @@ export class CovScript {
       ...this._branchesToIstanbul(),
       ...this._functionsToIstanbul(),
     };
-  }
-
-  public toIstanbul(): any {
-    const fileCoverage: IstanbulFileCoverageData = this.toIstanbulFileCoverageData();
-    const istanbulOuter = Object.create(null);
-    istanbulOuter[fileCoverage.path] = fileCoverage;
-    return istanbulOuter;
   }
 
   private _buildLines(sourceText: string, lines: CovLine[]): void {

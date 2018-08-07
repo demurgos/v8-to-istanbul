@@ -27,16 +27,25 @@ async function* getFixtures(): AsyncIterable<Fixture> {
     if (!(await fs.promises.lstat(itemPath)).isDirectory()) {
       continue;
     }
+    let fixtureConfig: Partial<Fixture> = {};
+    try {
+      fixtureConfig = JSON.parse((await fs.promises.readFile(path.join(itemPath, "fixture.json"))).toString("UTF-8"));
+    } catch (err) {
+      if (err.code !== "ENOENT") {
+        console.warn(err);
+      }
+    }
     yield {
       dir: itemPath,
       args: [path.resolve(itemPath, "main.js")],
       output: path.resolve(itemPath, "v8.json"),
+      ...fixtureConfig,
     };
   }
 }
 
 async function generateFixture(fixture: Fixture): Promise<void> {
-  const [proc, port] = await spawnInspected(fixture.args);
+  const [proc, port] = await spawnInspected(fixture.args, fixture.dir);
   let data: CoverageData[];
   try {
     data = await getCoverage(port);
@@ -57,11 +66,11 @@ const GET_COVERAGE_TIMEOUT = 1000; // Timeout in milliseconds
  * @param args CLI arguments.
  * @return A pair, the first item is the spawned process, the second is the port number.
  */
-async function spawnInspected(args: string[]): Promise<[childProcess.ChildProcess, number]> {
+async function spawnInspected(args: string[], cwd: string): Promise<[childProcess.ChildProcess, number]> {
   const proc: childProcess.ChildProcess = childProcess.spawn(
     process.execPath,
     [`--inspect=0`, ...args],
-    {stdio: "pipe"},
+    {cwd, stdio: "pipe"},
   );
 
   const port = await new Promise<number>((resolve, reject) => {
@@ -237,6 +246,8 @@ interface UrlInfo {
 }
 
 function getUrlInfo(scriptUrl: string, posixBaseDir: string): UrlInfo {
+  // TODO: Handle URLs starting with `cjs-facade:`?
+
   if (process.platform === "win32") {
     // Should not matter that much: this is just the generation of the fixtures.
     // They are commited.
