@@ -1,4 +1,7 @@
 import { SourceLocation } from "@babel/types";
+import Protocol from "devtools-protocol";
+
+export type V8Coverage = Pick<Protocol.Profiler.ScriptCoverage, "url" | "functions">;
 
 /**
  * Interface for Istanbul's `FileCoverage` options.

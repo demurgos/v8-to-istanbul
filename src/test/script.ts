@@ -14,17 +14,17 @@ declare const it: any;
 describe("CovScript", () => {
   describe("fromUrlSync", () => {
     it("creates line instance for each line in script", () => {
-      const script = CovScript.fromUrlSync(
-        require.resolve("./fixtures/scripts/functions.js"),
-      );
+      const scriptPath = require.resolve("./fixtures/scripts/functions.js");
+      const source = fs.readFileSync(scriptPath, "UTF-8");
+      const script = new CovScript(scriptPath, source, false);
       script.lines.length.should.equal(49);
       script.header.length.should.equal(62); // common-js header.
     });
 
     it("handles ESM style paths", () => {
-      const script = CovScript.fromUrlSync(
-        `file://${require.resolve("./fixtures/scripts/functions.js")}`,
-      );
+      const scriptPath = require.resolve("./fixtures/scripts/functions.js");
+      const source = fs.readFileSync(scriptPath, "UTF-8");
+      const script = new CovScript(`file://${scriptPath}`, source, true);
       script.lines.length.should.equal(49);
       script.header.length.should.equal(0); // ESM header.
     });

@@ -1,5 +1,4 @@
 import Protocol from "devtools-protocol";
-import fs from "fs";
 import Module from "module";
 import { CovBranch } from "./branch";
 import { CovFunction } from "./function";
@@ -34,7 +33,7 @@ export class CovScript {
   public readonly functions: CovFunction[];
   public eof: number;
 
-  private constructor(path: string, sourceText: string, isEsm: boolean) {
+  constructor(path: string, sourceText: string, isEsm: boolean) {
     this.path = path;
     this.header = isEsm ? "" : cjsHeader;
     this.lines = [];
@@ -42,26 +41,6 @@ export class CovScript {
     this.functions = [];
     this.eof = -1;
     this._buildLines(sourceText, this.lines);
-  }
-
-  public static async fromUrl(url: string): Promise<CovScript> {
-    const {path, isEsm} = parseUrl(url);
-    const sourceText: string = await new Promise<string>((resolve, reject) => {
-      fs.readFile(path, "UTF-8", (err, data) => {
-        if (err !== null) {
-          reject(err);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-    return new CovScript(path, sourceText, isEsm);
-  }
-
-  public static fromUrlSync(url: string): CovScript {
-    const {path, isEsm} = parseUrl(url);
-    const sourceText: string = fs.readFileSync(path, "UTF-8");
-    return new CovScript(path, sourceText, isEsm);
   }
 
   public applyCoverage(blocks: Protocol.Profiler.FunctionCoverage[]): void {
@@ -167,21 +146,4 @@ export class CovScript {
     }
     return {fnMap, f};
   }
-}
-
-interface ParsedUrl {
-  path: string;
-  isEsm: boolean;
-}
-
-/**
- * Parses the `.url` property from a V8 `ScriptCoverage`.
- *
- * @param url JavaScript script name or URL.
- */
-function parseUrl(url: string): ParsedUrl {
-  return {
-    path: url.replace(/^file:\/\//, ""),
-    isEsm: url.startsWith("file://"),
-  };
 }
