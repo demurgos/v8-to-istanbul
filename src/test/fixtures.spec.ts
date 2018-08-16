@@ -4,13 +4,14 @@ import fs from "fs";
 import path from "path";
 import { v8ToIstanbul } from "../lib";
 import { IstanbulFileCoverageData } from "../lib/types";
+import { FixtureOptions } from "./fixture-options";
 
 const FIXTURES_DIR = path.posix.resolve(__dirname, "fixtures");
 const DATA_FILE_NAME = "v8.json";
 
 describe("Fixtures", () => {
   for (const fixture of getFixtures()) {
-    describe(fixture.name, () => {
+    (fixture.skip ? describe.skip : describe)(fixture.name, () => {
       for (const item of fixture.data) {
         if (process.env.SNAPSHOT === "1") {
           it(`Generates a snapshot for: ${item.url}`, async () => {
@@ -33,6 +34,7 @@ interface Fixture {
   name: string;
   dir: string;
   data: FixtureData[];
+  skip: boolean;
 }
 
 interface FixtureData {
@@ -49,7 +51,19 @@ function* getFixtures(): Iterable<Fixture> {
     }
     const dataFile: string = path.resolve(itemPath, DATA_FILE_NAME);
     const data = JSON.parse(fs.readFileSync(dataFile, "UTF-8"));
-    yield {name: item, dir: itemPath, data};
+    let skip: boolean = true;
+    try {
+      const fixtureOptionsPath = path.resolve(itemPath, "fixture.json");
+      const options: FixtureOptions = JSON.parse(fs.readFileSync(fixtureOptionsPath).toString("UTF-8"));
+      if (options.skip !== undefined) {
+        skip = options.skip;
+      }
+    } catch (err) {
+      if (err.code !== "ENOENT") {
+        throw err;
+      }
+    }
+    yield {name: item, dir: itemPath, data, skip};
   }
 }
 

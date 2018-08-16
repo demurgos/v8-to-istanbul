@@ -6,7 +6,7 @@
   "types": "build/lib/index.d.ts",
   "scripts": {
     "generate:fixtures": "ts-node tools/generate-fixtures.ts",
-    "generate:snapshots": "cross-env SNAPSHOT=1 npm run test",
+    "generate:snapshots": "cross-env SNAPSHOT=1 mocha --require ts-node/register \"./src/test/**/*.spec.ts\"",
     "lint": "tslint --project src/lib/tsconfig.json",
     "posttest": "tslint --project src/lib/tsconfig.json",
     "prepare": "tsc --project src/lib/tsconfig.json",
@@ -33,7 +33,11 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "@babel/parser": "^7.0.0-rc.1",
+    "@babel/traverse": "^7.0.0-rc.1",
     "@babel/types": "^7.0.0-beta.56",
+    "@types/babel__parser": "^7.0.0",
+    "@types/babel__traverse": "^7.0.0",
     "devtools-protocol": "0.0.579242"
   },
   "devDependencies": {
