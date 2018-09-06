@@ -89,6 +89,16 @@
     "statementMap": {
       "s0": {
         "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 1
+        }
+      },
+      "s1": {
+        "start": {
           "line": 2,
           "column": 2
         },
@@ -99,7 +109,8 @@
       }
     },
     "s": {
-      "s0": 1
+      "s0": 2,
+      "s1": 1
     },
     "fnMap": {
       "f0": {
@@ -138,6 +149,26 @@
     "statementMap": {
       "s0": {
         "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      },
+      "s1": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 3
+        }
+      },
+      "s2": {
+        "start": {
           "line": 9,
           "column": 2
         },
@@ -146,7 +177,7 @@
           "column": 3
         }
       },
-      "s1": {
+      "s3": {
         "start": {
           "line": 11,
           "column": 4
@@ -159,7 +190,9 @@
     },
     "s": {
       "s0": 2,
-      "s1": 1
+      "s1": 2,
+      "s2": 2,
+      "s3": 1
     },
     "fnMap": {},
     "f": {},

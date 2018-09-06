@@ -14,6 +14,36 @@
       },
       "s1": {
         "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      },
+      "s2": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 37
+        }
+      },
+      "s3": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 31
+        }
+      },
+      "s4": {
+        "start": {
           "line": 11,
           "column": 0
         },
@@ -22,7 +52,17 @@
           "column": 3
         }
       },
-      "s2": {
+      "s5": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 14
+        }
+      },
+      "s6": {
         "start": {
           "line": 15,
           "column": 4
@@ -32,7 +72,7 @@
           "column": 25
         }
       },
-      "s3": {
+      "s7": {
         "start": {
           "line": 27,
           "column": 0
@@ -42,7 +82,17 @@
           "column": 3
         }
       },
-      "s4": {
+      "s8": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 31,
+          "column": 10
+        }
+      },
+      "s9": {
         "start": {
           "line": 20,
           "column": 2
@@ -52,7 +102,7 @@
           "column": 3
         }
       },
-      "s5": {
+      "s10": {
         "start": {
           "line": 21,
           "column": 4
@@ -60,6 +110,16 @@
         "end": {
           "line": 21,
           "column": 23
+        }
+      },
+      "s11": {
+        "start": {
+          "line": 23,
+          "column": 4
+        },
+        "end": {
+          "line": 23,
+          "column": 16
         }
       }
     },
@@ -69,7 +129,13 @@
       "s2": 1,
       "s3": 1,
       "s4": 1,
-      "s5": 1
+      "s5": 0,
+      "s6": 1,
+      "s7": 1,
+      "s8": 1,
+      "s9": 1,
+      "s10": 1,
+      "s11": 0
     },
     "fnMap": {
       "f0": {

@@ -150,7 +150,7 @@ class Converter {
         block.node,
         {
           enter: (path: NodePath) => {
-            if (path.isStatement() && !(path.isBlockStatement() || path.isDeclaration())) {
+            if (path.isStatement() && !(path.isBlockStatement() || path.isFunctionDeclaration())) {
               const key: string = this.nextSid();
               // assert loc is defined
               statementMap[key] = path.node.loc!;
