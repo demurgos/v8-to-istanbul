@@ -5,6 +5,8 @@ import Protocol from "devtools-protocol";
 import Module from "module";
 import { IstanbulFileCoverageData, V8Coverage } from "./types";
 
+export { IstanbulBranch, IstanbulFileCoverageData, IstanbulFunction, V8Coverage } from "./types";
+
 const CJS_PREFIX_LEN: number = (Module as any).wrapper[0].length;
 const CJS_SUFFIX_LEN: number = (Module as any).wrapper[1].length;
 
