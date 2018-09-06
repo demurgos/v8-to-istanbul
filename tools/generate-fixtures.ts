@@ -265,7 +265,7 @@ function getUrlInfo(scriptUrl: string, posixBaseDir: string): UrlInfo {
   }
   const isAbsolute: boolean = path.posix.isAbsolute(posixFilePath);
   let normalized: undefined | string;
-  if (isAbsolute && isDescendantOf(posixFilePath, posixBaseDir)) {
+  if (isAbsolute && isAncestorOf(posixBaseDir, posixFilePath)) {
     normalized = path.posix.join("/", path.posix.relative(posixBaseDir, posixFilePath));
     if (isFileUrl) {
       const tmp: url.URL = new url.URL(scriptUrl);
@@ -283,7 +283,7 @@ function getUrlInfo(scriptUrl: string, posixBaseDir: string): UrlInfo {
   };
 }
 
-function isDescendantOf(descendantPosixPath: string, ancestorPosixPath: string): boolean {
+function isAncestorOf(ancestorPosixPath: string, descendantPosixPath: string): boolean {
   if (descendantPosixPath === ancestorPosixPath) {
     return false;
   }

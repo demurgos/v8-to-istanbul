@@ -44,6 +44,7 @@
     "@types/chai": "^4.1.4",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.5.6",
+    "bluebird": "^3.5.1",
     "chai": "^4.1.2",
     "chrome-remote-interface": "^0.26.1",
     "cross-env": "^5.2.0",

@@ -1,0 +1,41 @@
+[
+  {
+    "url": "/main.js",
+    "source": "(function (exports, require, module, __filename, __dirname) { const Bluebird = require(\"bluebird\");\nconst fs = require(\"fs\");\n\nreadTextFileAsync = Bluebird.promisify(function (params, cb) {\n  fs.readFile(params, \"UTF-8\", cb);\n});\n\nreadTextFileAsync(\"./main.js\")\n\n});",
+    "functions": [
+      {
+        "functionName": "",
+        "ranges": [
+          {
+            "startOffset": 0,
+            "endOffset": 266,
+            "count": 1
+          }
+        ],
+        "isBlockCoverage": true
+      },
+      {
+        "functionName": "",
+        "ranges": [
+          {
+            "startOffset": 1,
+            "endOffset": 264,
+            "count": 1
+          }
+        ],
+        "isBlockCoverage": true
+      },
+      {
+        "functionName": "",
+        "ranges": [
+          {
+            "startOffset": 166,
+            "endOffset": 227,
+            "count": 1
+          }
+        ],
+        "isBlockCoverage": true
+      }
+    ]
+  }
+]
