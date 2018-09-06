@@ -3,9 +3,24 @@ import babelTraverse, { NodePath } from "@babel/traverse";
 import { File, Node, SourceLocation } from "@babel/types";
 import Protocol from "devtools-protocol";
 import Module from "module";
-import { IstanbulFileCoverageData, V8Coverage } from "./types";
+import {
+  IstanbulBranchCoverageData,
+  IstanbulFileCoverageData,
+  IstanbulFnCoverageData,
+  IstanbulFunction,
+  IstanbulStatementCoverageData,
+  V8Coverage,
+} from "./types";
 
-export { IstanbulBranch, IstanbulFileCoverageData, IstanbulFunction, V8Coverage } from "./types";
+export {
+  IstanbulBranch,
+  IstanbulBranchCoverageData,
+  IstanbulFileCoverageData,
+  IstanbulFnCoverageData,
+  IstanbulFunction,
+  IstanbulStatementCoverageData,
+  V8Coverage,
+} from "./types";
 
 const CJS_PREFIX_LEN: number = (Module as any).wrapper[0].length;
 const CJS_SUFFIX_LEN: number = (Module as any).wrapper[1].length;
@@ -75,8 +90,7 @@ class Converter {
       path: coverage.url,
       ...converter.getStatements(),
       ...converter.getFunctions(),
-      branchMap: Object.create(null),
-      b: Object.create(null),
+      ...converter.getBranches(),
     };
   }
 
@@ -86,7 +100,7 @@ class Converter {
   private readonly blockRoots: Set<Node>;
   // tslint:disable-next-line:variable-name
   private _nextFid: number;
-// tslint:disable-next-line:variable-name
+  // tslint:disable-next-line:variable-name
   private _nextSid: number;
 
   private constructor(ast: File, coverage: V8Coverage) {
@@ -119,9 +133,9 @@ class Converter {
     return `s${this._nextSid++}`;
   }
 
-  private getStatements(): any {
-    const statementMap: Record<string, SourceLocation> = Object.create(null);
-    const s: Record<string, number> = Object.create(null);
+  private getStatements<S extends keyof any = keyof any>(): IstanbulStatementCoverageData<S> {
+    const statementMap: Record<S, SourceLocation> = Object.create(null);
+    const s: Record<S, number> = Object.create(null);
 
     for (const block of this.blocks) {
       babelTraverse(
@@ -146,9 +160,9 @@ class Converter {
     return {statementMap, s};
   }
 
-  private getFunctions(): any {
-    const fnMap: Record<string, SourceLocation> = Object.create(null);
-    const f: Record<string, number> = Object.create(null);
+  private getFunctions<F extends keyof any = keyof any>(): IstanbulFnCoverageData<F> {
+    const fnMap: Record<F, IstanbulFunction> = Object.create(null);
+    const f: Record<F, number> = Object.create(null);
 
     for (const block of this.blocks) {
       if (!block.isFunction) {
@@ -156,10 +170,22 @@ class Converter {
       }
       const key: string = this.nextFid();
       // assert loc is defined
-      fnMap[key] = block.node.loc!;
+      fnMap[key] = {
+        name: block.v8.functionName,
+        decl: block.node.loc!,
+        loc: block.node.loc!,
+        line: block.node.loc!.start.line,
+      };
       f[key] = block.v8.ranges[0].count;
     }
     return {fnMap, f};
+  }
+
+  private getBranches<B extends keyof any = keyof any>(): IstanbulBranchCoverageData<B> {
+    return {
+      branchMap: Object.create(null),
+      b: Object.create(null),
+    };
   }
 }
 

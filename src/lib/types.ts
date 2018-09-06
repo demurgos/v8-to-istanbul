@@ -3,6 +3,42 @@ import Protocol from "devtools-protocol";
 
 export type V8Coverage = Pick<Protocol.Profiler.ScriptCoverage, "url" | "functions">;
 
+export interface IstanbulStatementCoverageData<S extends keyof any = keyof any> {
+  /**
+   * Map of statement locations keyed by statement index.
+   */
+  statementMap: Record<S, SourceLocation>;
+
+  /**
+   * Hit counts for statements.
+   */
+  s: Record<S, number>;
+}
+
+export interface IstanbulFnCoverageData<F extends keyof any = keyof any> {
+  /**
+   * Map of function metadata keyed by function index.
+   */
+  fnMap: Record<F, IstanbulFunction>;
+
+  /**
+   * Hit count for functions.
+   */
+  f: Record<F, number>;
+}
+
+export interface IstanbulBranchCoverageData<B extends keyof any = keyof any> {
+  /**
+   * Map of branch metadata keyed by branch index.
+   */
+  branchMap: Record<B, IstanbulBranch>;
+
+  /**
+   * Hit count for branches.
+   */
+  b: Record<B, number[]>;
+}
+
 /**
  * Interface for Istanbul's `FileCoverage` options.
  *
@@ -11,41 +47,11 @@ export type V8Coverage = Pick<Protocol.Profiler.ScriptCoverage, "url" | "functio
  * @param B Type of the keys of `branchMap` and `b`
  * @see https://github.com/istanbuljs/istanbuljs/blob/829e658dfa91e3a9533842be9ce940dbe7785c09/packages/istanbul-lib-coverage/lib/file.js#L151
  */
-export interface IstanbulFileCoverageData<S extends keyof any = keyof any, F extends keyof any = keyof any, B extends keyof any = keyof any> {
+export interface IstanbulFileCoverageData<S extends keyof any = keyof any, F extends keyof any = keyof any, B extends keyof any = keyof any> extends IstanbulStatementCoverageData<S>, IstanbulFnCoverageData<F>, IstanbulBranchCoverageData<B> {
   /**
    * The file path for which coverage is being tracked.
    */
   path: string;
-
-  /**
-   * Map of statement locations keyed by statement index.
-   */
-  statementMap: Record<S, SourceLocation>;
-
-  /**
-   * Map of function metadata keyed by function index.
-   */
-  fnMap: Record<F, IstanbulFunction>;
-
-  /**
-   * Map of branch metadata keyed by branch index.
-   */
-  branchMap: Record<B, IstanbulBranch>;
-
-  /**
-   * Hit counts for statements.
-   */
-  s: Record<S, number>;
-
-  /**
-   * Hit count for functions.
-   */
-  f: Record<F, number>;
-
-  /**
-   * Hit count for branches.
-   */
-  b: Record<B, number[]>;
 }
 
 /**

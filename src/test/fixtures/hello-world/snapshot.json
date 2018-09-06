@@ -29,14 +29,28 @@
     },
     "fnMap": {
       "f0": {
-        "start": {
-          "line": 1,
-          "column": 1
+        "name": "",
+        "decl": {
+          "start": {
+            "line": 1,
+            "column": 1
+          },
+          "end": {
+            "line": 3,
+            "column": 1
+          }
         },
-        "end": {
-          "line": 3,
-          "column": 1
-        }
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 1
+          },
+          "end": {
+            "line": 3,
+            "column": 1
+          }
+        },
+        "line": 1
       }
     },
     "f": {
