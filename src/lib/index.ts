@@ -1,9 +1,10 @@
 import { parse as babelParse } from "@babel/parser";
 import babelTraverse, { NodePath } from "@babel/traverse";
-import { File, Node, SourceLocation } from "@babel/types";
+import { ConditionalExpression, File, Node, SourceLocation } from "@babel/types";
 import Protocol from "devtools-protocol";
 import Module from "module";
 import {
+  IstanbulBranch,
   IstanbulBranchCoverageData,
   IstanbulFileCoverageData,
   IstanbulFnCoverageData,
@@ -102,6 +103,8 @@ class Converter {
   private _nextFid: number;
   // tslint:disable-next-line:variable-name
   private _nextSid: number;
+  // tslint:disable-next-line:variable-name
+  private _nextBid: number;
 
   private constructor(ast: File, coverage: V8Coverage) {
     this.ast = ast;
@@ -109,6 +112,7 @@ class Converter {
     this.blockRoots = new Set();
     this._nextFid = 0;
     this._nextSid = 0;
+    this._nextBid = 0;
 
     const unmatchedV8: FnCov[] = [...coverage.functions];
     babelTraverse(ast, {
@@ -131,6 +135,10 @@ class Converter {
 
   private nextSid(): string {
     return `s${this._nextSid++}`;
+  }
+
+  private nextBid(): string {
+    return `b${this._nextBid++}`;
   }
 
   private getStatements<S extends keyof any = keyof any>(): IstanbulStatementCoverageData<S> {
@@ -182,10 +190,37 @@ class Converter {
   }
 
   private getBranches<B extends keyof any = keyof any>(): IstanbulBranchCoverageData<B> {
-    return {
-      branchMap: Object.create(null),
-      b: Object.create(null),
-    };
+    const branchMap: Record<B, IstanbulBranch> = Object.create(null);
+    const b: Record<B, number[]> = Object.create(null);
+
+    for (const block of this.blocks) {
+      babelTraverse(
+        block.node,
+        {
+          enter: (path: NodePath) => {
+            if (path.isConditionalExpression()) {
+              const condExpr: ConditionalExpression = path.node;
+              const {consequent, alternate} = condExpr;
+              const key: string = this.nextBid();
+              // assert loc is defined
+              branchMap[key] = {
+                type: "cond-expr",
+                line: condExpr.loc!.start.line,
+                loc: condExpr.loc!,
+                locations: [consequent.loc!, alternate.loc!],
+              };
+              b[key] = [
+                getCount(block.v8.ranges, consequent),
+                getCount(block.v8.ranges, alternate),
+              ];
+            }
+          },
+        },
+        block.scope,
+        block.path,
+      );
+    }
+    return {branchMap, b};
   }
 }
 
@@ -205,11 +240,15 @@ function popMatchedV8(v8List: FnCov[], node: Node): FnCov | undefined {
 }
 
 function getCount(ranges: CovRange[], node: Node): number {
+  let result: number | undefined;
   // TODO: assert node has start/end
   for (const range of ranges) {
     if (range.startOffset <= node.start! && node.end! <= range.endOffset) {
-      return range.count;
+      result = range.count;
     }
   }
-  throw new Error("Count not found");
+  if (result === undefined) {
+    throw new Error("Count not found");
+  }
+  return result;
 }

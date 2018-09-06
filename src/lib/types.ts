@@ -82,5 +82,9 @@ export interface IstanbulFunction {
   name: string;
   decl: SourceLocation;
   loc: SourceLocation;
+
+  /**
+   * 1-based index of the first line of the function.
+   */
   line: number;
 }

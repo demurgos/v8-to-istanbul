@@ -125,7 +125,89 @@
       "f0": 1,
       "f1": 1
     },
-    "branchMap": {},
-    "b": {}
+    "branchMap": {
+      "b0": {
+        "type": "cond-expr",
+        "line": 5,
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 10
+          },
+          "end": {
+            "line": 5,
+            "column": 37
+          }
+        },
+        "locations": [
+          {
+            "start": {
+              "line": 5,
+              "column": 18
+            },
+            "end": {
+              "line": 5,
+              "column": 25
+            }
+          },
+          {
+            "start": {
+              "line": 5,
+              "column": 28
+            },
+            "end": {
+              "line": 5,
+              "column": 37
+            }
+          }
+        ]
+      },
+      "b1": {
+        "type": "cond-expr",
+        "line": 5,
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 10
+          },
+          "end": {
+            "line": 5,
+            "column": 37
+          }
+        },
+        "locations": [
+          {
+            "start": {
+              "line": 5,
+              "column": 18
+            },
+            "end": {
+              "line": 5,
+              "column": 25
+            }
+          },
+          {
+            "start": {
+              "line": 5,
+              "column": 28
+            },
+            "end": {
+              "line": 5,
+              "column": 37
+            }
+          }
+        ]
+      }
+    },
+    "b": {
+      "b0": [
+        1,
+        1
+      ],
+      "b1": [
+        0,
+        1
+      ]
+    }
   }
 }

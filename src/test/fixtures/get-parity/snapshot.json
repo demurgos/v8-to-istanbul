@@ -125,7 +125,129 @@
       "f0": 1,
       "f1": 4
     },
-    "branchMap": {},
-    "b": {}
+    "branchMap": {
+      "b0": {
+        "type": "cond-expr",
+        "line": 2,
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 9
+          },
+          "end": {
+            "line": 2,
+            "column": 37
+          }
+        },
+        "locations": [
+          {
+            "start": {
+              "line": 2,
+              "column": 23
+            },
+            "end": {
+              "line": 2,
+              "column": 29
+            }
+          },
+          {
+            "start": {
+              "line": 2,
+              "column": 32
+            },
+            "end": {
+              "line": 2,
+              "column": 37
+            }
+          }
+        ]
+      },
+      "b1": {
+        "type": "cond-expr",
+        "line": 2,
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 9
+          },
+          "end": {
+            "line": 2,
+            "column": 37
+          }
+        },
+        "locations": [
+          {
+            "start": {
+              "line": 2,
+              "column": 23
+            },
+            "end": {
+              "line": 2,
+              "column": 29
+            }
+          },
+          {
+            "start": {
+              "line": 2,
+              "column": 32
+            },
+            "end": {
+              "line": 2,
+              "column": 37
+            }
+          }
+        ]
+      },
+      "b2": {
+        "type": "cond-expr",
+        "line": 2,
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 9
+          },
+          "end": {
+            "line": 2,
+            "column": 37
+          }
+        },
+        "locations": [
+          {
+            "start": {
+              "line": 2,
+              "column": 23
+            },
+            "end": {
+              "line": 2,
+              "column": 29
+            }
+          },
+          {
+            "start": {
+              "line": 2,
+              "column": 32
+            },
+            "end": {
+              "line": 2,
+              "column": 37
+            }
+          }
+        ]
+      }
+    },
+    "b": {
+      "b0": [
+        1,
+        1
+      ],
+      "b1": [
+        1,
+        1
+      ],
+      "b2": [
+        2,
+        2
+      ]
+    }
   }
 }
